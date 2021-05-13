@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<form name="formfield" action="learn.html" method="get">
+		  用户名：<input name="username" value="hailan"> <br>
+		 密码： <input name="password" value="92730"><br>
+		  <input name="login" value="登录" type='submit'>
+		  <input name="loginout" value="注销" type='submit'>
+		</form>
+	</body>
+	<script>
+		let form = document.forms.formfield;
+		let userNm = form.elements.username;
+		let passwd = form.elements.password;
+		let date = new Date(Date.now() + 86400e3);
+		date = date.toUTCString();
+		
+		form.login.onclick =  function() {
+			if (userNm.value != 'hailan' || passwd.value != '92730') return false;
+			setCookie('user',userNm.value); 
+			alert(getCookie('user'));
+			}
+				
+		form.loginout.onclick = function() {
+			deleteCookie('user');
+			console.log(getCookie('user'));
+			return false;
+			
+		}
+		
+		console.log(getCookie('user'));
+		function getCookie(name) {
+		  let matches = document.cookie.match(new RegExp(
+		    "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+		  ));
+		  return matches ? decodeURIComponent(matches[1]) : undefined;
+		}
+		
+		function setCookie(name, value, options = {}) {
+		
+		  options = {
+		    path: '/',
+		    // expires: + date,
+		    "max-age":3600,
+		  };
+		
+		  if (options.expires instanceof Date) {
+		    options.expires = options.expires.toUTCString();
+		  }
+		
+		  let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+		
+		  for (let optionKey in options) {
+		    updatedCookie += "; " + optionKey;
+		    let optionValue = options[optionKey];
+		    if (optionValue !== true) {
+		      updatedCookie += "=" + optionValue;
+		    }
+		  }
+		
+		  document.cookie = updatedCookie;
+		}
+		
+		function deleteCookie(name) {
+		  setCookie(name, "", {
+		    'max-age': -1
+		  })
+		}
+		
+
+	</script>
+</html>

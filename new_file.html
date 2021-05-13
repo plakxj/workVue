@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			//演示说明indexedDB必须注意异步操作
+			let version = 2;
+			let openRequest = indexedDB.open(name, version);
+	        let db;
+			openRequest.onsuccess = function() {
+			 console.log("登录成功");
+			  
+			 let transaction = this.result.transaction("books", "readwrite"); // (1)
+			 
+			 // get an object store to operate on it
+			 let books = transaction.objectStore("books"); // (2)
+			 
+			 let book = {
+			   id: 'js',
+			   price: 10,
+			   created: new Date()
+			 };
+			 
+			 let request = books.add(book); // (3)
+			 
+			 request.onsuccess = function() { // (4)
+			   console.log("Book added to the store", request.result);
+			   let trans = openRequest.result.transaction("books","readonly"); // readonly
+			   let books1 = transaction.objectStore("books");
+			   
+			   
+			   let requestquery = books1.get('js');
+			   
+			   requestquery.onsuccess = function() {
+			     if (request.result !== undefined) {
+			       console.log("Books", requestquery.result['price']); // array of books with price=10
+			     } else {
+			       console.log("No such books");
+			     }
+			   };
+			 };
+			 
+			 request.onerror = function() {
+			   console.log("Error", request.error);
+			 };
+			 
+			};
+			openRequest.onerror = function() {
+			  console.error("Error", openRequest.error);
+			};
+			
+			openRequest.onupgradeneeded = function() {
+			  db = openRequest.result;
+			  if (!db.objectStoreNames.contains('books')) { // if there's no "books" store
+			    db.createObjectStore('books', {keyPath: 'id'}); // create it
+			  }
+			};
+			openRequest.onblocked = function() {
+			  console.log('旧数据库未更新');
+			};
+			
+			
+			
+			
+			
+		</script>
+	</body>
+</html>

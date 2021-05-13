@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<script src="https://cdn.jsdelivr.net/npm/idb@3.0.2/build/idb.min.js"></script>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<style>
+		button {
+			height: 20px;
+			width: 30px;
+		}
+	</style>
+	<body>
+		<!-- <form action="" method="post"> -->
+			姓名：<input type="" name="" id="namely" value="葛小伦" />
+			性别：<input type="" name="" id="sexual" value="男"/>
+			民族：<input type="" name="" id="race" value="汉" />
+			身份证号码：<input type="" name="" id="identification" value="142201198105094557" />
+			
+			<button onclick="add();return false" placeholder="提交"/>
+			<button onclick="list();return false" value="提交"/>
+			<button onclick="list2();return false" value="提交"/>
+		<!-- </form> -->
+	</body>
+	<script type="text/javascript">
+		
+		
+		let  db; 
+		init();
+		async function init() {
+			db = await idb.openDB("store", 1, db => {
+				if (db.oldVersion == 0) {
+					db.createObjectStore('party', {keyPath : 'name'})
+				}
+			});
+			}
+			
+		async function add() {
+			if (!namely.value | !sexual.value | !race.value | !identification.value) {alert('please fill all blanks!');return;}
+			let transaction = db.transaction("party", "readwrite");
+			let Members = transaction.objectStore('party');
+			let member = {
+				name:namely.value,
+				sex:sexual.value,
+				race:race.value,
+				identification:identification.value
+				};
+			await Members.add(member);
+			console.log(`${member.name}added`);
+			}
+		
+		async function list() {
+
+     		let transaction = db.transaction("partyMembers");
+			let Members = transaction.objectStore("partyMembers");
+			let cursor = await Members.openCursor();
+			cursor.onsuccess = function() {
+				let find = cursor.result;
+			  if (!find) {
+			    console.log("partyMembers", find); // array of books with price=10
+			  } else {
+			    console.log("未找到相关记录");
+			  }
+			};
+			cursor.onerror = function() {
+				console.log("查询失败")
+			}
+		}
+			
+		function list2() {
+
+			let transaction = openRequest.result.transaction("partyMembers");
+			let Members = transaction.objectStore("partyMembers");
+			let race = Members.index("raceList");
+			let request = race.getAll();
+			request.onsuccess = function() {
+			  if (this.result !== undefined) {
+			   
+				for (let elem of this.result) {
+					 console.log(`${elem.name} ${elem.race}${elem.identification}`); 
+				}// array of books with price=10
+			  } else {
+			    console.log("未找到相关记录");
+			  }
+			};
+			request.onerror = function() {
+				console.log("查询失败")
+			}
+		}
+	</script>
+</html>
+

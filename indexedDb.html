@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<style>
+		button {
+			height: 20px;
+			width: 30px;
+		}
+	</style>
+	<body>
+		<!-- <form action="" method="post"> -->
+			姓名：<input type="" name="" id="namely" value="葛小伦" />
+			性别：<input type="" name="" id="sexual" value="男"/>
+			民族：<input type="" name="" id="race" value="汉" />
+			身份证号码：<input type="" name="" id="identification" value="142201198105094557" />
+			
+			<button onclick="add();return false" placeholder="提交"/>
+			<button onclick="list();return false" value="提交"/>
+			<button onclick="list2();return false" value="提交"/>
+		<!-- </form> -->
+	</body>
+	<script type="text/javascript">
+		
+		
+		let db; 
+		init();
+		function init() {
+			openRequest = indexedDB.open("db", 6);
+		
+		    openRequest.onupgradeneeded = function() {
+		        const db = openRequest.result;
+		        if (!db.objectStoreNames.contains('partyMembers')) { // if there's no "books" store
+		            let partyMembers = db.createObjectStore('partyMembers', {keyPath: 'name'});
+				    partyMembers.createIndex("sexList", "sex", { unique: false });
+			    	partyMembers.createIndex("raceList", "race", { unique: false });
+			    	partyMembers.createIndex("identificationList", "identification", { unique: false });
+				    console.log("数据库更新");
+				};
+			};
+			
+		    openRequest.onsuccess = function () {
+			    db = openRequest.result;
+			    console.log("初始化成功!");
+		    };
+	
+	    }
+		
+		function add() {
+			if (!namely.value | !sexual.value | !race.value | !identification.value) {alert('please fill all blanks!');return;}
+			let transaction = db.transaction("partyMembers", "readwrite");
+			let Members = transaction.objectStore('partyMembers');
+			
+			let member = {
+				name:namely.value,
+				sex:sexual.value,
+				race:race.value,
+				identification:identification.value
+				};
+			let request = Members.add(member);
+			
+			request.onsuccess = function() { // (4)
+			    console.log(`数据库增加`, request.result);
+			};
+			
+			request.onerror = function() {
+			  console.log("Error", request.error);
+			};
+		}
+		
+		function list() {
+
+     		let transaction = db.transaction("partyMembers");
+			let Members = transaction.objectStore("partyMembers");
+			let cursor = Members.openCursor('葛小伦');
+			
+			cursor.onsuccess = function() {
+				let find = cursor.result;
+			    if (find) {
+			        console.log(`${find.value.name}${find.value.sex}`);//cursor需要使用value属性再使用key
+			        find.continue();
+			    } else {
+			    console.log("No more books");
+			  }
+			};
+			
+			cursor.onerror = function() {
+				console.log("查询失败")
+			}
+		}
+			
+		function list2() {
+			let transaction = db.transaction("partyMembers");
+			let Members = transaction.objectStore("partyMembers");
+			let race = Members.index("raceList");
+			let request = race.getAll();
+			
+			request.onsuccess = function() {
+			  if (this.result !== undefined) {
+			   
+			   for (let elem of this.result) {
+			   	 console.log(`${elem.name} ${elem.race}${elem.identification}`); 
+			   }// array of books
+			  } else {
+			    console.log("未找到相关记录");
+			  }
+			};
+			
+			request.onerror = function() {
+				console.log("查询失败")
+			};
+		}
+	</script>
+</html>

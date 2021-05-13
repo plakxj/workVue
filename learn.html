@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script defer src="js/calender.js"></script>
+		<style>
+		header {
+		    background-color:black;
+		    color:white;
+		    text-align:center;
+		    padding:5px;	 
+		}
+		nav {
+		    line-height:30px;
+		    background-color:#eeeeee;
+		    height:700px;
+		    width:15%;
+		    float:left;
+		    padding:5px;
+			text-align: center;
+		}
+		
+		section {
+		    width:40%;
+		    float:left;
+		    padding:10px;	 	 
+		}
+		footer {
+		    background-color:black;
+		    color:white;
+		    clear:both;
+		    text-align:center;
+		    padding:5px;	 	 
+		}
+		#rside {
+			width:35%;
+			float:right;
+			padding:10px;	
+		}
+		</style>
+	</head>
+	<body>
+		<header>
+		<h1>City Gallery</h1>
+		</header>
+		
+		<nav>
+			<div id="sheet1" class="mui-popover mui-popover-bottom mui-popover-action ">
+			<!-- 可选择菜单 -->
+			<ul class="mui-table-view">
+			  <li class="mui-table-view-cell">
+				<a href="#">1菜单1</a>
+			  </li>
+			  <li class="mui-table-view-cell">
+				<a href="#">2菜单2</a>
+			  </li>
+			</ul>
+			<!-- 取消菜单 -->
+			<ul class="mui-table-view">
+			  <li class="mui-table-view-cell">
+				<a href="#sheet1"><b>3取消</b></a>
+			  </li>
+			</ul>
+		</div>
+		<hr >
+	<div id="calendar">
+		
+	</div>
+		</nav>
+		
+		<section>
+		<h1>London</h1>
+		<p>
+		London is the capital city of England. It is the most populous city in the United Kingdom,
+		with a metropolitan area of over 13 million inhabitants.
+		</p>
+		<p>
+		Standing on the River Thames, London has been a major settlement for two millennia,
+		its history going back to its founding by the Romans, who named it Londinium.
+		</p>
+		</section>
+		<div id="rside">
+			<img src="img/e27645afbd5c9a66b218127e3eb50f31625a6ff7.jpg@1320w_1764h.webp" width="300px" height="300px">
+		</div>
+		<footer>
+		Copyright W3Schools.com
+		</footer>
+	</body>
+	<script type="text/javascript">
+		if (getCookie('user')) console.log(`welcome,${getCookie('user')}`);
+		function getCookie(name) {
+		  let matches = document.cookie.match(new RegExp(
+		    "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+		  ));
+		  return matches ? decodeURIComponent(matches[1]) : undefined;
+		}
+	</script>
+	</html>
