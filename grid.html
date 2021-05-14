@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<style type="text/css">
+		#grid {
+			display: grid;
+			border:solid 1px  #2fe ;
+			width: 50%;
+			height: 50vh;
+			grid-template-columns: repeat(3,30%);
+		    grid-template-rows: repeat(2,10vh);//grid不好设置啊
+			grid-gap:10px;
+		}
+		#grid div {
+			width: 100%;
+			height: 100%;
+			border: solid 1px #4e5;
+			padding: .2em;
+			box-sizing: border-box;
+			grid-gap:.2em;
+			margin: 2px;
+			}
+	</style>
+	<body><div id="grid">
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+		</div>
+	</body>
+</html>
