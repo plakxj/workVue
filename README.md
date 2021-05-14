@@ -18,7 +18,20 @@ git remote add origin https://gitee.com/angleyan0510/workVue.git
 git push -u origin master
 
 
+# gitee
+Host gitee.com
+HostName gitee.com
+PreferredAuthentications publickey
+IdentityFile ~/.ssh/id_rsa_gitee
 
+# github
+Host github.com
+HostName github.com
+PreferredAuthentications publickey
+IdentityFile ~/.ssh/id_rsa_github
 
+ssh -T git@github.com
 
+Hi yourname! You've successfully authenticated, but GitHub does not provide shell access.
 
+ssh -T git@gitee.com
